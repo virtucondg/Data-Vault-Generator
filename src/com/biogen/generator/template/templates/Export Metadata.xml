@@ -1,0 +1,149 @@
+<template name="Export Model Information" mode="Output" fileType="Excel"> 
+	<workbook name="Model_{DIAGRAM.$FileName$}_{SUBMODEL.Name}_{APP.DATE}.xlsx" headerTextFormat="HEADER" textFormat="BODY"> 
+		<sheet name="{SUBMODEL.Name:28}_E" title="Data Model Entity Worksheet (_E)" filter="doEntity" sorted="B;C"> 
+			<grid objects="Entity" name="Entity Export Grid"> 
+				<data property="ENTITY.GUID" name="ENTITY ID" requirement="Optional" definition="The ER/Studio GUID for the Entity.  Leave blank if a new record" />
+				<data property="ENTITY.Owner" name="ENTITY OWNER" requirement="Required" definition="The schema that this entity is created in" />
+				<data property="ENTITY.EntityName" name="ENTITY NAME" requirement="Required" definition="The logical name for the entity" />
+				<data property="ENTITY.TableName" maxLength="30" name="TABLE NAME" requirement="Required" definition="The physical name for this entity. Will be used in all DDL" />
+				<data property="ENTITY.$BUSINESSDATAOBJECT.LogicalName$" name="BUSINESS DATA OBJECT" requirement="Optional" definition="The business data object this entity is a part of" />
+				<data property="ENTITY.Note" name="NOTES" wrap="Y" requirement="Recommended" definition="Notes about the entity. Will display on the Team Server Portal" />
+				<data property="ENTITY.Definition" name="DEFINITON" wrap="Y" requirement="Recommended" definition="The business definition of the entity. Will connect with the Team Server Portal Terms" />
+				<data property="ENTITY.#Workflow Name#" wrap="Y" name="WORKFLOW NAME" requirement="Recommended" definition="The name of the workflow that loads this table. This will become the job name" />
+				<data property="ENTITY.#View Type#" name="VIEW TYPE" requirement="Optional" definition="The types of views this entity is a base object for (TXN, TXN_HIST, TXN_FULL, TXN_FULL_HIST) semicolon-separated.  To define a specific base view name, prefix the list with the base name and a colon" />
+				<data property="ENTITY.#Bridge Table List#" name="BRIDGE TABLE LIST" wrap="Y" requirement="Optional" definition="If a base object for views the link tables that go along with it.  Note that satellite tables will be found automatically." />
+				<data property="ENTITY.#Manual Override#" name="MANUAL OVERRIDE" requirement="Optional" definition="If this entity was generated and then modified manually.  'Y' will prevent the object from being updated through macros." />
+			</grid>
+		</sheet>
+		<sheet name="{SUBMODEL.Name:28}_A" title="Data Model Attribute Worksheet (_A)" filter="doAttribute" sorted="B;C;E"> 
+			<grid objects="Attribute" name="Attribute Export Grid" format="DEFAULT"> 
+				<data property="ENTITY.GUID" name="ENTITY ID" requirement="Optional" definition="The ER/Studio GUID for the Entity.  Leave blank if a new record" />
+				<data property="ENTITY.Owner" name="ENTITY OWNER" requirement="Required" definition="The schema that this entity is created in" />
+				<data property="ENTITY.EntityName" name="ENTITY NAME" requirement="Required" definition="The logical name for the entity" />
+				<data property="ENTITY.TableName" maxLength="30" name="TABLE NAME" requirement="Required" definition="The physical name for this entity. Will be used in all DDL" />
+				<data property="ATTRIBUTE.SequenceNumber" name="ATTRIBUTE\nSEQUENCE" requirement="Required" definition="The position this Attribute is located in the entity.  If deletes of Properties are allowed on import 'DEL' will delete this Attribute." />
+				<data property="ATTRIBUTE.GUID" name="ATTRUBITE ID" requirement="Optional" definition="The ER/Studio GUID for the Attribute.  Leave blank if a new record" />
+				<data property="ATTRIBUTE.AttributeName" name="LOGICAL NAME" requirement="Required" definition="The logical name for this Attribute.  If a foreign key then this will be the parent name." />
+				<data property="ATTRIBUTE.$LogicalRoleName$" name="LOGICAL ROLE NAME" requirement="Optional" definition="The logical name for this Attribute" />
+				<data property="ATTRIBUTE.ColumnName" maxLength="30" name="COLUMN NAME" requirement="Required" definition="The physical name for this Attribute.  If a foreign key then this will be the parent name." />
+				<data property="ATTRIBUTE.$RoleName$" maxLength="30" name="COLUMN ROLE NAME" requirement="Optional" definition="The physical name for this Attribute. Will be used in all DDL" />
+				<data property="ATTRIBUTE.$DomainName$" name="DOMAIN" requirement="Optional" definition="The datatype domain of this Attribute" />
+				<data property="APP.BLANK" name="USAGE" requirement="Optional" definition="The usage of this source Attribute" filter="doSourceExport" />
+				<data property="APP.BLANK" name="TARGET TABLE" requirement="Optional" definition="The target table(s) of this Attribute" filter="doSourceExport" />
+				<data property="ATTRIBUTE.$DataType$" name="COLUMN DATA TYPE" requirement="Required" definition="The datatype of this Attribute" />
+				<data property="ATTRIBUTE.$DataLength$" name="TOTAL COLUMN LENGTH" requirement="Optional*" definition="The maximum length of this Attribute. Required for Number and Text datatypes" />
+				<data property="ATTRIBUTE.$DataScale$" name="# OF PLACES TO\nRIGHT OF DECIMAL" requirement="Optional*" definition="If NUMERIC the number of decimal digits.  Leave blank otherwise" />
+				<data property="APP.BLANK" name="VALID VALUES" requirement="Optional" definition="If there are specific values" />
+				<data property="ATTRIBUTE.$NullOption$" name="NULLABILITY" requirement="Optional" definition="Nullability of this attribute: [NULL|NOT NULL|NN DQM]. Default NULL" />
+				<data property="ATTRIBUTE.DeclaredDefault" name="DEFAULT VALUE" requirement="Optional" definition="The default value to assign to this Attribute" />
+				<data property="ATTRIBUTE.PrimaryKey" format="BOOLEAN" name="PRIMARY KEY" requirement="Optional" definition="Is this Attribute part of the primary key [Y|N]" />
+				<data property="ATTRIBUTE.ForeignKey" format="BOOLEAN" name="FOREIGN KEY" requirement="Optional" definition="Does this Attribute have a foreign key constraint [Y|N]" />
+				<data property="ATTRIBUTE.Notes" name="NOTES" requirement="Recommended" definition="Notes about the Attribute. Will display on the Team Server Portal" />
+				<data property="ATTRIBUTE.Definition" name="DEFINITON" requirement="Recommended" definition="The business definition of the Attribute. Will connect with the Team Server Portal Terms" />
+				<data property="ATTRIBUTE.#Rate of Change#" name="RELATIVE RATE OF CHANGE" requirement="Recommended" definition="The relative rate of change of this Attribute [Low|Medium|High]" />
+				<data property="ATTRIBUTE.#Completeness#" name="COMPLETENESS" requirement="Recommended" definition="The completeness of this Attribute [Complete|Mostly|Sometimes|Rarely|Empty]" />
+			</grid>
+		</sheet>
+		<sheet name="{SUBMODEL.Name:28}_I" title="Data Model Index Worksheet (_I)" filter="doIndex" sorted="B;H"> 
+			<grid objects="IndexColumn" name="Index Export Grid"> 
+				<data property="INDEX.GUID" name="ID" requirement="Optional" definition="The ER/Studio GUID for the index.  Leave blank if a new record" />
+				<data property="INDEX.Name" maxLength="30" name="INDEX NAME" requirement="Optional" definition="The logical name for this index" />
+				<data property="ENTITY.Owner" name="ENTITY OWNER" requirement="Optional" definition="The schema that this parent entity is created in" />
+				<data property="ENTITY.EntityName" name="ENTITY NAME" requirement="Required" definition="The name for the entity" />
+				<data property="INDEX.$KeyType$" name="INDEX TYPE" requirement="Required" definition="The type of index [PK|IE|AK]" />
+				<data property="INDEX.Unique" format="BOOLEAN" name="UNIQUE" requirement="Optional" definition="Is this index unique? [Y|N]; default N" />
+				<data property="INDEXCOLUMN.GUID" name="LOGICAL NAME" requirement="Optional" definition="The ER/Studio GUID for the index column.  Leave blank if a new record" />
+				<data property="INDEXCOLUMN.SequenceNo" name="COLUMN SEQUENCE" requirement="Required" definition="The sequence of this column in the index" />
+				<data property="INDEXCOLUMN.ColumnName" name="COLUMN ATTRIBUTE NAME" requirement="Required" definition="The name of this child column" />
+				<data property="INDEXCOLUMN.$SortOrder$" name="SORT ORDER" requirement="Optional" definition="The sort ordering for this column [ASC|DESC]; default is ASC" />
+				<data property="INDEX.LogOrPhysOnly" format="BOOLEAN" name="LOGICAL ONLY" requirement="Optional" definition="Is this index only in the Logical model [Y|N]; default " />
+			</grid>
+		</sheet>
+		<sheet name="{SUBMODEL.Name:28}_R" title="Data Model Relationsip Worksheet (_I)" filter="doRelationship" sorted="B;D"> 
+			<grid objects="ChildFKColumn" name="Relationship Export Grid"> 
+				<data property="RELATIONSHIP.GUID" name="PARENT RELATIONSHIP\nID" requirement="Optional" definition="The ER/Studio GUID for the relationship.  Leave blank if a new record" />
+				<data property="RELATIONSHIP.Name" name="PARENT RELATIONSHIP\nFK NAME" requirement="Optional" definition="The logical name for this relationship" />
+				<data property="RELATIONSHIP.BusinessName" maxLength="30" name="PARENT RELATIONSHIP\nFK BUSINESS NAME" requirement="Optional" definition="The physical name for this relationship" />
+				<data property="FKCOLUMN.SequenceNo" name="COLUMN SEQUENCE" requirement="Required" definition="The order of this attribute in this relationship.  If deletes of relationships are allowed then 'DEL' will delete the relationship but keep the child attribute and 'DEL!' will also delete the child attribute" />
+				<data property="FKCOLUMN.GUID" name="COLUMN SEQUENCE\nID" requirement="Required" definition="The ER/Studio GUID for the column sequence" />
+				<data property="RELATIONSHIP.$PARENTENTITY.Owner$" maxLength="30" name="PARENT TABLE OWNER" requirement="Required" definition="The schema that this parent entity is created in" />
+				<data property="RELATIONSHIP.$PARENTENTITY.TableName$" maxLength="30" name="PARENT TABLE NAME" requirement="Required" definition="The physical name for this parent entity; will be used in all DDL" />
+				<data property="FKCOLUMN.$ParentAttributeName$" maxLength="30" name="PARENT COLUMN NAME" requirement="Required" definition="The physical name for this parent column; will be used in all DDL" />
+				<data property="RELATIONSHIP.$CHILDENTITY.Owner$" maxLength="30" name="CHILD TABLE OWNER" requirement="Required" definition="The schema that this child entity is created in" />
+				<data property="RELATIONSHIP.$CHILDENTITY.TableName$" maxLength="30" name="CHILD TABLE NAME" requirement="Required" definition="The physical name for this child entity; will be used in all DDL" />
+				<data property="FKCOLUMN.$ChildAttributeName$" maxLength="30" name="CHILD COLUMN NAME" requirement="Required" definition="The physical name for this child column; will be used in all DDL" />
+				<data property="RELATIONSHIP.$Type$" name="RELATIONSHIP TYPE" requirement="Required" definition="The type of the relationship [Identifying|Non-Identifying|Non-Specific]" />
+				<data property="RELATIONSHIP.$Mandatory$" name="OPTIONALITY" requirement="Optional*" definition="Must this child attribute always have a value [Optional|Mandatory]; default Optional" />
+				<data property="RELATIONSHIP.LogOrPhysOnly" name="LOGICAL ONLY" format="BOOLEAN" requirement="Optional" definition="Is this relationship only in the Logical model [Y|N]; default N" />
+				<data property="RELATIONSHIP.$ParentIndex$" name="PARENT INDEX" requirement="Required" description="The name of the index used for enforcement; 'PK' for primary key" />
+			</grid>
+		</sheet>
+		<sheet name="{SUBMODEL.Name:28}_T" title="Data Model Lineage Batch Worksheet (_T)" filter="doLineageBatch" sorted="B;C"> 
+			<grid objects="Transformation" name="Transformation Export Grid"> 
+				<data property="TRANSFORMATION.GUID" name="WORKFLOW ID" requirement="Optional" definition="The ER/Studio GUID for the Transformation.  Leave blank if a new record" />
+				<data property="TRANSFORMATION.$DataFlow$" name="BATCH NAME" requirement="Required" definition="The name of the batch that loads this table" />
+				<data property="TRANSFORMATION.Name" name="WORKFLOW NAME" requirement="Required" definition="The name of the workflow that loads this table; this will become the job name" />
+				<data property="ENTITY.GUID" name="ENTITY ID" requirement="Optional" definition="The ER/Studio GUID for the Entity.  Leave blank if a new record" />
+				<data property="ENTITY.Owner" name="TARGET ENTITY OWNER" requirement="Required" definition="The schema that this entity is created in" />
+				<data property="ENTITY.EntityName" name="TARGET ENTITY NAME" requirement="Required" definition="The logical name for the entity" />
+				<data property="ENTITY.TableName" maxLength="30" name="TARGET TABLE NAME" requirement="Required" definition="The physical name for this entity. Will be used in all DDL" />
+				<data property="TRANSFORMATION.#Archive Data#" name="ARCHIVE DATA" requirement="Recommended" definition="Should the data be archived [Yes|No]" />
+				<data property="TRANSFORMATION.#Data Load Frequency#" name="LOAD FREQUENCY" requirement="Recommended" definition="Frequency of data loading [Daily|Weekly|Monthly|On_Demand|Real-Time|Multiple/Day]" />
+				<data property="TRANSFORMATION.#Estimated Daily Row Count#" name="DAILY ROW COUNT" requirement="Recommended" definition="Approximation of the number of rows to be processed each execution" />
+				<data property="TRANSFORMATION.#Job Failure Recovery#" name="JOB FAILURE RECOVERY" requirement="Recommended" definition="Restart options if an error occurs [Restart Entire Load|Contiune From End Point|Cannot Contiune]" />
+				<data property="TRANSFORMATION.#Source File Name#" name="SOURCE FILE NAME" requirement="Recommended" definition="If the source is a file the name to process; wildcards are acceptable" />
+				<data property="TRANSFORMATION.#Source File Format#" name="SOURCE FILE FORMAT" requirement="Recommended" definition="The type of the source file [Excel|CSV Text|Tab-Delimited Text]" />
+				<data property="TRANSFORMATION.#Source File Attribute Count#" name="SOURCE FILE ATTRIBUTE COUNT" requirement="Recommended" definition="The number of columns present in the source file; used to verify file is correct" />
+				<data property="TRANSFORMATION.#Drop Indexes on Load#" name="DROP INDEXES ON LOAD" requirement="Recommended" definition="For performance should the indexes should be dropped, the data loaded, and indexes recreated [Y|N]" />
+				<data property="TRANSFORMATION.#Source Select Query Override#" wrap="Y" name="SELECT QUERY OVERRIDE" requirement="Optional*" definition="If a custom Select SQL query is needed to retrieve records from the source table" />
+				<data property="TRANSFORMATION.#Target Insert Query Override#" wrap="Y" name="INSERT QUERY OVERRIDE" requirement="Optional*" definition="If a custom Insert SQL query is needed to retrieve records from the source table" />
+				<data property="TRANSFORMATION.#Target Update Query Override#" wrap="Y" name="UPDATE QUERY OVERRIDE" requirement="Optional*" definition="If a custom Update SQL query is needed to retrieve records from the source table" />
+				<data property="TRANSFORMATION.#Source Delta Filter Override#" wrap="Y" name="DELTA FILTER OVERRIDE" requirement="Optional*" definition="If a custom Where fragment is needed to detect new source table data" />
+				<data property="TRANSFORMATION.#Source Delete Filter Override#" wrap="Y" name="DELETE FILTER OVERRIDE" requirement="Optional*" definition="If a custom Where fragment is needed to detect deleted records in the source table" />
+				<data property="TRANSFORMATION.#Custom Parameters Override#" wrap="Y" name="CUSTOM PARAMETERS" requirement="Optional" definition="If there are any other custom parameters/SQL required this free-form field can be used, semicolon-separated. Any custom parameters can be listed and will be passed into the workflow engine.  The following parameters are for the generator and will not be passed:  [MultiActiveSatellite;NoDeletion;SelectQueryType={Normal|Distinct|Group};SelectQueryFilter=filter;CustomSourceQueryAlias=driving table alias...]" />
+				<data property="TRANSFORMATION.#Manual Override#" name="MANUAL OVERRIDE" requirement="Optional" definition="If this lineage was generated and then modified manually.  'Y' will prevent the object from being updated through macros." />
+				<data property="TRANSFORMATION.#Active Batch Name#" maxLength="64" name="ACTIVE BATCH NAME" requirement="Optional" definition="If the Active Batch name of this lineage is different than the lineage name; there is a 64-character limit." />
+			</grid>
+		</sheet>
+		<sheet name="{SUBMODEL.Name:28}_L" title="Data Model Lineage Worksheet (_L)" filter="doLineage" sorted="B;C;E;R;L;M;O"> 
+			<grid objects="DataMovementColumnLink" name="Transformation Detail Export Grid"> 
+				<data property="ENTITY.GUID" name="ENTITY ID" requirement="Optional" definition="The ER/Studio GUID for the Entity.  Leave blank if a new record" />
+				<data property="ENTITY.Owner" name="ENTITY OWNER" requirement="Required" definition="The schema that this entity is created in" />
+				<data property="ENTITY.EntityName" name="ENTITY NAME" requirement="Required" definition="The logical name for the entity" />
+				<data property="ENTITY.TableName" maxLength="30" name="TABLE NAME" requirement="Required" definition="The physical name for this entity. Will be used in all DDL" />
+				<data property="ATTRIBUTE.SequenceNumber" name="ATTRIBUTE SEQUENCE" requirement="Optional" definition="The position this attribute is located in the entity" />
+				<data property="ATTRIBUTE.GUID" name="ATTRIBUTE ID" requirement="Optional" definition="The ER/Studio GUID for the Attribute.  Leave blank if a new record" />
+				<data property="ATTRIBUTE.AttributeName" name="LOGICAL NAME" requirement="Required" definition="The logical name for this attribute.  If a foreign key then this will be the parent name." />
+				<data property="ATTRIBUTE.$LogicalRoleName$" name="LOGICAL ROLE NAME" requirement="Optioanl" definition="The logical role name for this attribute" />
+				<data property="ATTRIBUTE.ColumnName" name="COLUMN NAME" requirement="Reqiured" definition="The physical name for this attribute.  If a foreign key then this will be the parent name." />
+				<data property="ATTRIBUTE.$RoleName$" name="COLUMN ROLE NAME" requirement="Optional" definition="The physical name for this attribute; will be used in all DDL" />
+				<data property="DATAMOVEMENTCOLUMNLINK.$SOURCEENTITY.GUID$" name="SOURCE ENTITY ID" requirement="Optional" definition="The ER/Studio GUID for the Source Entity.  Leave blank if a new record" />
+				<data property="DATAMOVEMENTCOLUMNLINK.$SOURCEENTITY.Owner$" name="SOURCE ENTITY OWNER" requirement="Optional" definition="The schema that this source entity is created in" />
+				<data property="DATAMOVEMENTCOLUMNLINK.$SOURCEENTITY.EntityName$" name="SOURCE ENTITY NAME" requirement="Optional" definition="The logical name for the source entity" />
+				<data property="DATAMOVEMENTCOLUMNLINK.$SOURCEATTRIBUTE.GUID$" name="SOURCE ATTRIBUTE ID" requirement="Optional" definition="The ER/Studio GUID for the source Attribute.  Leave blank if a new record" />
+				<data property="DATAMOVEMENTCOLUMNLINK.$SOURCEATTRIBUTE.AttributeName$" name="SOURCE ATTRIBUTE NAME" requirement="Optional" definition="The logical name for this source attribute" />
+				<data property="ATTRIBUTE.SourceDirectTransformationLogic" name="TRANSFORMATION LOGIC" requirement="Optional*" definition="The logic for transformation.  'MD5' will create an MD5 hash.  Leave blank if the columns are just concatenated" />
+				<data property="ATTRIBUTE.SourceDirectTransformationDescription" name="LINEAGE DESCRIPTION" requirement="Optional*" definition="The description of this transformation" />
+				<data property="TRANSFORMATION.$QualifiedName$" name="LINEAGE WORKFLOW" requirement="Required" definition="The workflow(s) that this source attribute is a part of" />
+			</grid>
+		</sheet>
+		<sheet name="{SUBMODEL.Name:28}_S" title="Data Model Source Reference Worksheet (_I)" filter="doSourceRef" distinct="B;C;E;F"> 
+			<grid objects="DataMovementColumnLink" name="Source Direct Export Grid" validation="DATAMOVEMENTCOLUMNLINK.$SOURCEENTITY.EntityName$"> 
+				<data property="TRANSFORMATION.GUID" name="WORKFLOW ID" requirement="Optional" definition="The ER/Studio GUID for the Transformation.  Leave blank if a new record" />
+				<data property="TRANSFORMATION.$DataFlow$" name="BATCH NAME" requirement="Required" definition="The name of the batch that loads this table" />
+				<data property="TRANSFORMATION.Name" name="WORKFLOW NAME" requirement="Required" definition="The name of the workflow that loads this table; this will become the job name" />
+				<data property="DATAMOVEMENTCOLUMNLINK.$SOURCEENTITY.GUID$" name="SOURCE ENTITY ID" requirement="Optional" definition="The ER/Studio GUID for the Source Entity.  Leave blank if a new record" />
+				<data property="DATAMOVEMENTCOLUMNLINK.$SOURCEENTITY.Owner$" name="SOURCE ENTITY OWNER" requirement="Optional" definition="The schema that this source entity is created in" />
+				<data property="DATAMOVEMENTCOLUMNLINK.$SOURCEENTITY.EntityName$" name="SOURCE ENTITY NAME" requirement="Optional" definition="The logical name for the source entity" />
+			</grid>
+			<grid objects="Transformation/Entity" name="Data Model Source SQL Export Grid" header="false">
+				<data property="TRANSFORMATION.GUID" name="WORKFLOW ID" requirement="Optional" definition="The ER/Studio GUID for the Transformation.  Leave blank if a new record" />
+				<data property="TRANSFORMATION.$DataFlow$" name="BATCH NAME" requirement="Required" definition="The name of the batch that loads this table" />
+				<data property="TRANSFORMATION.Name" name="WORKFLOW NAME" requirement="Required" definition="The name of the workflow that loads this table; this will become the job name" />
+				<data property="" name="SOURCE ENTITY ID" requirement="Optional" definition="The ER/Studio GUID for the Source Entity.  Leave blank if a new record" />
+				<data property="TRANSFORMATION.$SOURCEENTITY.Owner$" name="SOURCE ENTITY OWNER" requirement="Optional" definition="The schema that this source entity is created in" />
+				<data property="TRANSFORMATION.$SOURCEENTITY.Name$" name="SOURCE ENTITY NAME" requirement="Optional" definition="The logical name for the source entity" />
+			</grid>
+		</sheet>
+	</workbook>
+</template>

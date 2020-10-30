@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template name="Build Workflows and STTMs" mode="Output" fileType="Excel"> 
+	<textFormat name="CATEGORY_BLUE" size="10" bold="Y" border="THIN" color="WHITE" backColor="DARK_BLUE" alignment="CENTER" verticalAlignment="BOTTOM" />
+	<textFormat name="CATEGORY_ORANGE" size="10" bold="Y" border="THIN" color="WHITE" backColor="ORANGE" alignment="CENTER" verticalAlignment="BOTTOM" />
+	<textFormat name="CATEGORY_PURPLE" size="10" bold="Y" border="THIN" color="WHITE" backColor="VIOLET" alignment="CENTER" verticalAlignment="BOTTOM" />
+	<textFormat name="CATEGORY_GREEN" size="10" bold="Y" border="THIN" color="WHITE" backColor="GREEN" alignment="CENTER" verticalAlignment="BOTTOM" />
+	<textFormat name="HEADER_BLUE" size="10" bold="Y" wrap="Y" border="THIN" color="BLACK" backColor="AQUA" alignment="CENTER" verticalAlignment="BOTTOM" />
+	<textFormat name="HEADER_ORANGE" size="10" bold="Y" wrap="Y" border="THIN" color="BLACK" backColor="LIGHT_ORANGE" alignment="CENTER" verticalAlignment="BOTTOM" />
+	<textFormat name="HEADER_PURPLE" size="10" bold="Y" wrap="Y" border="THIN" color="BLACK" backColor="LAVENDER" alignment="CENTER" verticalAlignment="BOTTOM" />
+	<textFormat name="HEADER_GREEN" size="10" bold="Y" wrap="Y" border="THIN" color="BLACK" backColor="LIGHT_GREEN" alignment="CENTER" verticalAlignment="BOTTOM" />
+	<textFormat name="DETAIL_HYPERLINK" size="10" bold="N" wrap="Y" border="THIN" color="PURPLE" underline="U_SINGLE" backColor="AQUA" alignment="CENTER" verticalAlignment="CENTER" />
+	<workbook name="STTM_{DIAGRAM.$FILENAME$}_{SUBMODEL.Name}_{APP.DATE}.xlsx" filter="doSTTM"> 
+		<sheet name="Summary" title="Summary" headerTextFormat="HEADER" textFormat="BODY"> 
+			<grid objects="Transformation" name="Summary Grid"> 
+				<data property="ENTITY.TableName" name="Target Tables" />
+				<data property="{TRANSFORMATION.$DATAFLOW.Name$}:{TRANSFORMATION.Name}" hyperlink="{ENTITY.$TableNameSequence$}!A1" name="Workflow Names" textFormat="BODY_HYPERLINK"/>
+				<data property="!Y" name="Comments" />
+			</grid>
+		</sheet>
+		<sheet objects="Transformation" name="{ENTITY.$TableNameSequence$}" title="STTM Detail Sheet" headerTextFormat="HEADER" textFormat="BODY"> 
+			<print text="Return to Summary" hyperlink="Summary!A1" row="1" col="8" textFormat="DETAIL_HYPERLINK" newLine="N" />
+			<list name="STTM Detail Header" row="1" col="1" headerMerge="3" dataMerge="3">
+				<data property="TRANSFORMATION.#Source File Name#" name="Expected File Name:" />
+				<data property="TRANSFORMATION.Name" name="Workflow Names" />
+				<data property="TRANSFORMATION.#Source File Format#" name="Format:" />
+				<data property="TRANSFORMATION.#Source File Attribute Count#" name="Expected Attribute Count:" />
+				<data property="TRANSFORMATION.#Data Load Frequency#" name="Frequency:" />
+				<data property="TRANSFORMATION.#Estimated Daily Row Count#" name="Estimated Row Count:" />
+				<data property="TRANSFORMATION.#Load Strategy#" name="Load Strategy:" />
+				<data property="TRANSFORMATION.#Archive Data#" name="Archive Strategy:" />
+				<data property="TRANSFORMATION.#Job Failure Recovery#" name="Job Failure Recovery:" />
+				<data property="TRANSFORMATION.#Drop Indexes on Load#" name="Drop Indexes on Load:" />
+				<data property="TRANSFORMATION.$CustomParameter.SelectQueryType$" name="Select Query Type:" />
+				<data property="TRANSFORMATION.$CustomParameter.SelectQueryFilter$" name="Select Query Filter:" />
+			</list>
+			<print text="" newLine="Y" />
+			<print text="" newLine="Y" />
+			<print text="#" textFormat="CATEGORY_BLUE" newLine="N" />
+			<print text="Source System or Table" textFormat="CATEGORY_ORANGE" merge="6" newLine="N" />
+			<print text="Transformation" textFormat="CATEGORY_PURPLE" merge="4" newLine="N" />
+			<print text="Target" textFormat="CATEGORY_GREEN" merge="8" newLine="Y" />
+			<grid objects="Attribute" name="STTM Attribute Grid"> 
+				<data property="ATTRIBUTE.SequenceNumber" name="ID" headerTextFormat="HEADER_BLUE" />
+				<data property="ATTRIBUTE.$SOURCETABLES.Owner$" wrap="Y" name="Schema" headerTextFormat="HEADER_ORANGE" />
+				<data property="ATTRIBUTE.$SOURCETABLES.TableName$" wrap="Y" name="Table Name" headerTextFormat="HEADER_ORANGE" />
+				<data property="ATTRIBUTE.$SOURCECOLUMNS.$ColumnName$" wrap="Y" name="Column Name" headerTextFormat="HEADER_ORANGE" />
+				<data property="ATTRIBUTE.$SOURCECOLUMNS.$DataType$" wrap="Y" name="Data Type" headerTextFormat="HEADER_ORANGE" />
+				<data property="ATTRIBUTE.$SOURCECOLUMNS.$DataLengthScale$" wrap="Y" name="Length" headerTextFormat="HEADER_ORANGE" />
+				<data property="ATTRIBUTE.$SOURCECOLUMNS.$NullOption$" wrap="Y" name="Nullable" headerTextFormat="HEADER_ORANGE" />
+				<data property="APP.BLANK" name="Business Logic" headerTextFormat="HEADER_PURPLE" />
+				<data property="ATTRIBUTE.$CONCATENATEDSOURCECOLUMNS.$FormattedColumnName$" wrap="Y" name="Transformation Logic" headerTextFormat="HEADER_PURPLE" />
+				<data property="ATTRIBUTE.SourceDirectTransformationDescription" name="Transformation Notes" headerTextFormat="HEADER_PURPLE" />
+				<data property="APP.Blank" name="Error Handlong" headerTextFormat="HEADER_PURPLE" />
+				<data property="ENTITY.Owner" name="Schema" headerTextFormat="HEADER_GREEN" />
+				<data property="ENTITY.TableName" name="Table Name" headerTextFormat="HEADER_GREEN" />
+				<data property="ATTRIBUTE.$ColumnName$" name="Column Name" headerTextFormat="HEADER_GREEN" />
+				<data property="ATTRIBUTE.DataType" name="Data Type" headerTextFormat="HEADER_GREEN" />
+				<data property="ATTRIBUTE.$DataLengthScale$" name="Length" headerTextFormat="HEADER_GREEN" />
+				<data property="ATTRIBUTE.PrimaryKey" format="BOOLEAN" name="Key" headerTextFormat="HEADER_GREEN" />
+				<data property="ATTRIBUTE.$NullOption$" format="BOOLEAN" name="Nullable" headerTextFormat="HEADER_GREEN" />
+				<data property="ATTRIBUTE.#Not Null DQM#" name="Not Null DQM" headerTextFormat="HEADER_GREEN" />
+			</grid>
+		</sheet>
+	</workbook>
+	<workbook name="MD_{DIAGRAM.$FILENAME$}_{SUBMODEL.Name}_{APP.DATE}.xlsx" filter="doMetadata"> 
+		<sheet name="Batch Configuration" title="Batch Configuration" headerTextFormat="HEADER" textFormat="BODY"> 
+			<grid objects="Dataflow" name="Batch Configuration Grid"> 
+				<data property="DATAFLOW.Name" name="Batch Name" />
+				<data property="!Y" name="Active Flag" />
+				<data property="!" name="Maximum Parallel Execution" />
+			</grid>
+		</sheet>
+		<sheet name="Batch Workflow Configuration" title="Batch Workflow Configuration" headerTextFormat="HEADER" textFormat="BODY"> 
+			<grid objects="Transformation" name="Batch Workflow Configuration Grid"> 
+				<data property="TRANSFORMATION.$DATAFLOW.Name$" name="Batch Name" />
+				<data property="TRANSFORMATION.$WorkflowName$" name="Workflow Name" />
+				<data property="!!Y" name="Active Flag" />
+				<data property="!" name="Sequence\nNumber" />
+			</grid>
+		</sheet>
+		<sheet name="Template Configuration" title="Template Configuration" headerTextFormat="HEADER" textFormat="BODY"> 
+			<print text="Template Name" textFormat="HEADER" newLine="N" />
+			<print text="Active Flag" textFormat="HEADER" newLine="N" />
+			<print text="Template SQL" textFormat="HEADER" newLine="Y" />
+		</sheet>
+		<sheet name="Validations" title="Validations" filter="disabled" headerTextFormat="HEADER" textFormat="BODY"> 
+			<grid objects="Transformation" name="Validation Configuration Grid"> 
+				<data property="TRANSFORMATION.$WorkflowName$" name="Workflow Name" />
+				<data property="TRANSFORMATION.$TemplateName$" name="Workflow Template" />
+				<data property="TRANSFORMATION.$TemplateName$" name="Target Schema" />
+				<data property="TRANSFORMATION.$TemplateName$" name="Select Query" />
+				<data property="TRANSFORMATION.#Source Delta Filter Override#" name="Delta Filter" />
+				<data property="TRANSFORMATION.#Source Delete Filter Override#" name="Delete Filter" />
+				<data property="TRANSFORMATION.$TemplateName$" name="Target Insert Query" />
+				<data property="TRANSFORMATION.$TemplateName$" name="Target Update Override" />
+				<data property="TRANSFORMATION.#Custom Parameters Override#" name="Custom Parameters" />
+				<data property="TRANSFORMATION.#Job Failure Recovery#" name="Action on Error" />
+				<data property="TRANSFORMATION.#Drop Indexes on Load#" name="Drop Indexes Flag" />
+				<data property="!Y" name="Active Flag" />
+				<data property="TRANSFORMATION.#Active Batch Job Name#" name="Active Batch Job Name" />
+			</grid>
+		</sheet>
+		<sheet name="Workflow Configuration" title="Workflow Configuration" headerTextFormat="HEADER" textFormat="BODY"> 
+			<grid objects="Transformation" name="Workflow Configuration Grid"> 
+				<data property="TRANSFORMATION.WorkflowName" name="Workflow Name" />
+				<data property="TRANSFORMATION.$TemplateName$" name="Workflow Template" />
+				<data property="TRANSFORMATION.$TemplateName$" name="Target Schema" />
+				<data property="TRANSFORMATION.$TemplateName$" name="Select Query" />
+				<data property="TRANSFORMATION.#Source Delta Filter Override#" name="Delta Filter" />
+				<data property="TRANSFORMATION.#Source Delete Filter Override#" name="Delete Filter" />
+				<data property="TRANSFORMATION.$TemplateName$" name="Target Insert Query" />
+				<data property="TRANSFORMATION.$TemplateName$" name="Target Update Override" />
+				<data property="TRANSFORMATION.#Custom Parameters Override#" name="Custom Parameters" />
+				<data property="TRANSFORMATION.#Job Failure Recovery#" name="Action on Error" />
+				<data property="TRANSFORMATION.#Drop Indexes on Load#" name="Drop Indexes Flag" />
+				<data property="!Y" name="Active Flag" />
+				<data property="TRANSFORMATION.#Active Batch Job Name#" name="Active Batch Job Name" />
+			</grid>
+		</sheet>
+		<sheet name="Workflow Parameters" title="Workflow Paraemters" headerTextFormat="HEADER" textFormat="BODY"> 
+			<grid objects="CustomParameter" name="Workflow Parameters Configuration Grid"> 
+				<data property="{TRANSFORMATION.$DATAFLOW.Name$}:{TRANSFORMATION.Name}" name="Workflow Name" />
+				<data property="PARAMETER.Name" name="Parameter Name" />
+				<data property="PARAMETER.Value" name="Parameter Value" />
+			</grid>
+		</sheet>
+	</workbook>
+</template>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language name="PLSQL">
+	<token name="MD5">$$SCHEMA_DH_ABC.WORKFLOW_PROCESSING_PKG.FNC_GET_HASH_VAL_NEW(</token>
+	<token name="MD5RS">$$SCHEMA_DH_ABC.WORKFLOW_PROCESSING_PKG.FNC_GET_HASH_VAL_SOURCE($$RECORD_SOURCE$$,</token>
+	<token name="MD5_TOKEN">||&apos;|&apos;||</token>
+	<token name="SELECT_SQL_HUB">::SOURCE_QUERY::SELECT {sourcecolumn.$1$} HKEY, {sourcecolumn_with_label} FROM {SOURCEENTITY.OWNER}.{SOURCEENTITY.TABLENAME} a {TRANSFORMATION.$Source Delta Query$}
+::TARGET_QUERY::SELECT {column.$1$} HKEY FROM {ENTITY.Owner}.{Entity.TableName}
+::KEY_QUERY::SELECT {sourcecolumn.$1$} HKEY FROM {SOURCEENTITY.OWNER}.{SOURCEENTITY.TABLENAME} a {TRANSFORMATION.$Source Delta Query$}</token>
+	<token name="INSERT_SQL_HUB">[column]</token>
+	<token name="UPDATE_SQL_HUB"></token>
+	<token name="DELETE_SQL_HUB"></token>
+	<token name="SELECT_SQL_LNK">::SOURCE_QUERY::SELECT {sourcecolumn.$1$} HKEY, {sourcecolumn_with_label} FROM {SOURCEENTITY.OWNER}.{SOURCEENTITY.TABLENAME} a {TRANSFORMATION.$Source Delta Query$}
+::TARGET_QUERY::SELECT {column.$1$} HKEY FROM {ENTITY.Owner}.{Entity.TableName}
+::KEY_QUERY::SELECT {sourcecolumn.$1$} HKEY FROM {SOURCEENTITY.OWNER}.{SOURCEENTITY.TABLENAME} a {TRANSFORMATION.$Source Delta Query$}</token>
+	<token name="INSERT_SQL_LNK">[column]</token>
+	<token name="UPDATE_SQL_LNK"></token>
+	<token name="DELETE_SQL_LNK"></token>
+	<token name="SELECT_SQL_SAT">::SOURCE_QUERY::SELECT {sourcecolumn.$1$} HKEY, {sourcecolumn_with_label} FROM {SOURCEENTITY.OWNER}.{SOURCEENTITY.TABLENAME} a {TRANSFORMATION.$Source Delta Query$}
+::TARGET_QUERY::SELECT {column.$1$} HKEY FROM {ENTITY.Owner}.{Entity.TableName}
+::KEY_QUERY::SELECT {sourcecolumn.$1$} HKEY FROM {SOURCEENTITY.OWNER}.{SOURCEENTITY.TABLENAME} a {TRANSFORMATION.$Source Delta Query$}</token>
+	<token name="INSERT_SQL_SAT">[column]</token>
+	<token name="UPDATE_SQL_SAT">UPDATE {ENTITY.Owner}.{ENTITY.TableName} TGT SET RECORD_CURRENT_FLG=&apos;N&apos;, RECORD_END_TS=$$RECORD_END_TIME$$ WHERE RECORD_CURRENT_FLG=&apos;Y&apos; AND ETL_PROCESS_NAME=$$ETL_PROCESS_NAME$$ AND (RECORD_CREATE_TS &lt; $$SESSION_START_TIME$$ AND NVL(ACCOUNT_ID, &apos;-999&apos;) IN (SELECT NVL(UPDATE_HKEY, &apos;-999&apos;) FROM ($$SELECT_QUERY$$)))</token>
+	<token name="DELETE_SQL_SAT">SELECT UPDATE_HKEY FROM ($$ORIG_SELECT_QUERY$$) WHERE {TRANSFOMRATION.#Source Delete Filter Override#}</token>
+	<token name="DELETE_SQL_SAT_UPDATEKEYCOLUMN">SELECT TO_CHAR({CUSTOMPARAMETER.UpdateKeyColumn}) UPDATE_HKEY FROM {ENTITY.Owner}.{ENTITY.TableName} WHERE ETL_PROCESS_NAME=$$ETL_PROCESS_NAME$$ AND RECORD_CURRENT_FLG = &apos;Y&apos; MINUS SELECT TO_CHAR(UPDATE_HKEY) FROM ($$ORIG_SELECT_QUERY$$)</token>
+	<token name="SELECT_SQL_BRG">{TRANSFOMATION.#Source Select Query#}</token>
+	<token name="INSERT_SQL_BRG">{TRANSFORMATION.#Target Insert Query#}</token>
+	<token name="UPDATE_SQL_BRG"></token>
+	<token name="DELETE_SQL_BRG"></token>
+</language>

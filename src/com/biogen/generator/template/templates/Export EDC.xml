@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template name="Export Model Information" mode="Output" fileType="CSV"> 
+	<file name="{DIAGRAM.$Abbreviation$}_{BUSINESSDATAOBJECT.LogicalName:26}" objects="BusinessDataObject" title="EDC File Output" distinct="E;D"> 
+		<grid objects="DataMovementColumnLink/Entity" name="EDC Object Export Grid" validation="DATAMOVEMENTCOLUMNLINK.$SOURCEENTITY.EntityName$"> 
+			<data property="core.DataSetDataFlow" name="Association" requirement="Required" definition="The type of connection" />
+			<data property="APP.BLANK" name="From Connection" requirement="Required" definition="The connection the source is from" />
+			<data property="APP.BLANK" name="To Connection" requirement="Required" definition="The connection the target is from" />
+			<data property="Commercial_Data_Warehouse://PRCDHB1/{DATAMOVEMENTCOLUMNLINK.$SOURCEENTITY.Owner$}/{DATAMOVEMENTCOLUMNLINK.$SOURCEENTITY.TableName$}" name="From Object" requirement="Required" definition="The source object name" />
+			<data property="Commercial_Data_Warehouse://PRCDHB1/{ENTITY.Owner}/{ENTITY.TableName}" name="To Object" requirement="Required" definition="The target object name" />
+			<data property="TRUE" name="com.infa.ldm.etl.ETLContext" requirement="Required" definition="Map to actual objects" />
+		</grid>
+		<grid objects="DataMovementColumnLink" name="EDC Column Export Grid" header="false" validation="DATAMOVEMENTCOLUMNLINK.$SOURCEENTITY.EntityName$"> 
+			<data property="core.DirectionalDataFlow" name="Association" requirement="Required" definition="The type of connection" />
+			<data property="APP.BLANK" name="From Connection" requirement="Required" definition="The connection the source is from" />
+			<data property="APP.BLANK" name="To Connection" requirement="Required" definition="The connection the target is from" />
+			<data property="Commercial_Data_Warehouse://PRCDHB1/{DATAMOVEMENTCOLUMNLINK.$SOURCEENTITY.Owner$}/{DATAMOVEMENTCOLUMNLINK.$SOURCEENTITY.TableName$}/{DATAMOVEMENTCOLUMNLINK.$SOURCEATTRIBUTE.ColumnName$}" name="From Object" requirement="Required" definition="The source object name" />
+			<data property="Commercial_Data_Warehouse://PRCDHB1/{ENTITY.Owner}/{ENTITY.TableName}/{ATTRIBUTE.ColumnName}" name="To Object" requirement="Required" definition="The target object name" />
+			<data property="TRUE" name="com.infa.ldm.etl.ETLContext" requirement="Required" definition="Map to actual objects" />
+		</grid>
+		<grid objects="Transformation/Entity" name="EDC Insert Query Object Export Grid" header="false">
+			<data property="core.DataSetDataFlow" name="Association" requirement="Required" definition="The type of connection" />
+			<data property="APP.BLANK" name="From Connection" requirement="Required" definition="The connection the source is from" />
+			<data property="APP.BLANK" name="To Connection" requirement="Required" definition="The connection the target is from" />
+			<data property="Commercial_Data_Warehouse://PRCDHB1/{TRANSFORMATION.$SOURCEENTITY$[[\.,/]]}" name="From Object" requirement="Required" definition="The source object name" />
+			<data property="Commercial_Data_Warehouse://PRCDHB1/{ENTITY.Owner}/{ENTITY.TableName}" name="To Object" requirement="Required" definition="The target object name" />
+			<data property="TRUE" name="com.infa.ldm.etl.ETLContext" requirement="Required" definition="Map to actual objects" />
+		</grid>
+	</file>
+</template>
